@@ -30,7 +30,7 @@ export default function LoginApsPage() {
     <main className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Fundo UBS */}
       <Image
-        src="/images/ubs-bg.jpg"
+        src={import.meta.env.BASE_URL + 'images/ubs-bg.jpg'}
         alt="Unidade Básica de Saúde"
         fill
         className="object-cover object-center"

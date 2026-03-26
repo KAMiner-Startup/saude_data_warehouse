@@ -107,7 +107,7 @@ export default function DashboardApsPage() {
   const cobertura = Math.round((visitasRealizadas / totalVisitasSemana) * 100)
 
   return (
-    <main className="flex-1 overflow-y-auto bg-background">
+    <main className="flex-1 overflow-y-autod">
       <div className="p-4 md:p-6 space-y-6">
 
         {/* Cabeçalho */}

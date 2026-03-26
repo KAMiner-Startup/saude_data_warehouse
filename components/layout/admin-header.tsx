@@ -108,7 +108,7 @@ export function AdminHeader({
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 h-8 px-2 rounded-xl hover:bg-muted/60">
               <Avatar className="h-6 w-6">
-                <AvatarImage src="/images/avatar-usuario-3.png" alt={nomeUsuario} className="object-cover" />
+                <AvatarImage src={import.meta.env.BASE_URL + 'images/avatar-usuario-3.png'} alt={nomeUsuario} className="object-cover" />
                 <AvatarFallback className="text-[10px] font-bold text-white" style={{ background: ADMIN_COLOR }}>
                   {iniciais}
                 </AvatarFallback>
@@ -122,7 +122,7 @@ export function AdminHeader({
           <DropdownMenuContent align="end" className="w-52 rounded-2xl">
             <DropdownMenuLabel className="font-normal flex items-center gap-3">
               <Avatar className="h-9 w-9">
-                <AvatarImage src="/images/avatar-usuario-3.png" alt={nomeUsuario} className="object-cover" />
+                <AvatarImage src={import.meta.env.BASE_URL + 'images/avatar-usuario-3.png'} alt={nomeUsuario} className="object-cover" />
                 <AvatarFallback className="text-[11px] font-bold text-white" style={{ background: ADMIN_COLOR }}>
                   {iniciais}
                 </AvatarFallback>

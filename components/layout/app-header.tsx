@@ -125,7 +125,7 @@ export function AppHeader({
             <Button variant="ghost" size="sm" className="gap-2.5 px-2 rounded-full hover:bg-muted/80 cursor-pointer">
               <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ border: "1.5px solid oklch(0.38 0.19 264 / 0.2)" }}>
                 <Image
-                  src="/images/avatar-usuario-3.png"
+                  src={import.meta.env.BASE_URL + 'images/avatar-usuario-3.png'}
                   alt="Foto de perfil"
                   width={32}
                   height={32}

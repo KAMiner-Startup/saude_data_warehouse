@@ -27,7 +27,7 @@ export default function LoginAdministrativoPage() {
     <main className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Fundo administrativo */}
       <Image
-        src="/images/admin-bg.jpg"
+        src={import.meta.env.BASE_URL + 'images/admin-bg.jpg'}
         alt="Secretaria Municipal de Saúde"
         fill
         className="object-cover object-center"

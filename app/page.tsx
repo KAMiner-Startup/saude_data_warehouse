@@ -51,7 +51,7 @@ export default function HomePage() {
     <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center">
       {/* Fundo hospitalar */}
       <Image
-        src="/images/hospital-bg.jpg"
+        src={import.meta.env.BASE_URL + 'images/hospital-bg.jpg'}
         alt="Hospital Saúde Búzios"
         fill
         className="object-cover object-center"

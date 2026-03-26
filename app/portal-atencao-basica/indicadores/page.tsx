@@ -188,7 +188,7 @@ export default function IndicadoresPage() {
   const coberturaMedia = Math.round(indicadores.reduce((acc, i) => acc + i.cobertura, 0) / indicadores.length)
 
   return (
-    <main className="flex-1 overflow-y-auto bg-background">
+    <main className="flex-1 overflow-y-auto">
       <div className="p-4 md:p-6 space-y-6">
 
         {/* Cabeçalho */}

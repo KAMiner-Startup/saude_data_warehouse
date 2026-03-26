@@ -1,0 +1,102 @@
+import { Navigate, Outlet, Route, Routes } from "react-router-dom"
+
+import HomePage from "@/app/page"
+import LoginAdministrativoPage from "@/app/login/administrativo/page"
+import LoginApsPage from "@/app/login/aps/page"
+import LoginHospitalarPage from "@/app/login/hospitalar/page"
+
+import PortalAdministrativoLayout from "@/app/portal-administrativo/layout"
+import AdminDashboardPage from "@/app/portal-administrativo/dashboard/page"
+import AdminAuditoriaPage from "@/app/portal-administrativo/auditoria/page"
+import AdminConfiguracoesPage from "@/app/portal-administrativo/configuracoes/page"
+import AdminConfiguracoesAlertasPage from "@/app/portal-administrativo/configuracoes/alertas/page"
+import AdminMonitoramentoPage from "@/app/portal-administrativo/monitoramento/page"
+import AdminRelatoriosPage from "@/app/portal-administrativo/relatorios/page"
+import AdminUnidadesApsPage from "@/app/portal-administrativo/unidades-aps/page"
+import AdminUnidadesHospitalaresPage from "@/app/portal-administrativo/unidades-hospitalares/page"
+import AdminUsuariosPage from "@/app/portal-administrativo/usuarios/page"
+
+import PortalAtencaoBasicaLayout from "@/app/portal-atencao-basica/layout"
+import ApsDashboardPage from "@/app/portal-atencao-basica/dashboard/page"
+import ApsAgentesPage from "@/app/portal-atencao-basica/agentes/page"
+import ApsAlertasPage from "@/app/portal-atencao-basica/alertas/page"
+import ApsIndicadoresPage from "@/app/portal-atencao-basica/indicadores/page"
+import ApsPacientesPage from "@/app/portal-atencao-basica/pacientes/page"
+import ApsPacientePage from "@/app/portal-atencao-basica/paciente/[id]/page"
+import ApsVisitasPage from "@/app/portal-atencao-basica/visitas/page"
+
+import PortalHospitalarLayout from "@/app/portal-hospitalar/layout"
+import HospitalarDashboardPage from "@/app/portal-hospitalar/dashboard/page"
+import HospitalarMovimentacoesPage from "@/app/portal-hospitalar/movimentacoes/page"
+import HospitalarPacientePage from "@/app/portal-hospitalar/paciente/[id]/page"
+import HospitalarPacientesRecentesPage from "@/app/portal-hospitalar/pacientes-recentes/page"
+
+function AdminLayoutRoute() {
+  return (
+    <PortalAdministrativoLayout>
+      <Outlet />
+    </PortalAdministrativoLayout>
+  )
+}
+
+function ApsLayoutRoute() {
+  return (
+    <PortalAtencaoBasicaLayout>
+      <Outlet />
+    </PortalAtencaoBasicaLayout>
+  )
+}
+
+function HospitalarLayoutRoute() {
+  return (
+    <PortalHospitalarLayout>
+      <Outlet />
+    </PortalHospitalarLayout>
+  )
+}
+
+export function AppRouter() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+
+      <Route path="/login/administrativo" element={<LoginAdministrativoPage />} />
+      <Route path="/login/aps" element={<LoginApsPage />} />
+      <Route path="/login/hospitalar" element={<LoginHospitalarPage />} />
+
+      <Route path="/portal-administrativo" element={<AdminLayoutRoute />}>
+        <Route path="dashboard" element={<AdminDashboardPage />} />
+        <Route path="auditoria" element={<AdminAuditoriaPage />} />
+        <Route path="configuracoes" element={<AdminConfiguracoesPage />} />
+        <Route path="configuracoes/alertas" element={<AdminConfiguracoesAlertasPage />} />
+        <Route path="monitoramento" element={<AdminMonitoramentoPage />} />
+        <Route path="relatorios" element={<AdminRelatoriosPage />} />
+        <Route path="unidades-aps" element={<AdminUnidadesApsPage />} />
+        <Route path="unidades-hospitalares" element={<AdminUnidadesHospitalaresPage />} />
+        <Route path="usuarios" element={<AdminUsuariosPage />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
+      </Route>
+
+      <Route path="/portal-atencao-basica" element={<ApsLayoutRoute />}>
+        <Route path="dashboard" element={<ApsDashboardPage />} />
+        <Route path="agentes" element={<ApsAgentesPage />} />
+        <Route path="alertas" element={<ApsAlertasPage />} />
+        <Route path="indicadores" element={<ApsIndicadoresPage />} />
+        <Route path="pacientes" element={<ApsPacientesPage />} />
+        <Route path="paciente/:id" element={<ApsPacientePage />} />
+        <Route path="visitas" element={<ApsVisitasPage />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
+      </Route>
+
+      <Route path="/portal-hospitalar" element={<HospitalarLayoutRoute />}>
+        <Route path="dashboard" element={<HospitalarDashboardPage />} />
+        <Route path="movimentacoes" element={<HospitalarMovimentacoesPage />} />
+        <Route path="paciente/:id" element={<HospitalarPacientePage />} />
+        <Route path="pacientes-recentes" element={<HospitalarPacientesRecentesPage />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}

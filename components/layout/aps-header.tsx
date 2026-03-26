@@ -129,7 +129,7 @@ export function ApsHeader({
                 style={{ border: "1.5px solid oklch(0.55 0.18 160 / 0.2)" }}
               >
                 <Image
-                  src="/images/avatar-usuario-2.png"
+                  src={import.meta.env.BASE_URL + 'images/avatar-usuario-2.png'}
                   alt="Foto de perfil"
                   width={32}
                   height={32}

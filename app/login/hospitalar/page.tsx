@@ -27,7 +27,7 @@ export default function LoginPage() {
     <main className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Fundo hospitalar */}
       <Image
-        src="/images/hospital-bg.jpg"
+        src={import.meta.env.BASE_URL + 'images/hospital-bg.jpg'}
         alt="Corredor do Hospital Saúde Búzios"
         fill
         className="object-cover object-center"

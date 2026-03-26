@@ -152,7 +152,7 @@ export default function AgentesPage() {
   const agentesAtivos = agentes.filter(a => a.status === "ativo").length
 
   return (
-    <main className="flex-1 overflow-y-auto bg-background">
+    <main className="flex-1 overflow-y-auto">
       <div className="p-4 md:p-6 space-y-6">
 
         {/* Cabeçalho */}
