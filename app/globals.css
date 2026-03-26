@@ -1,0 +1,245 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Scrollbar fino para sidebars */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ── Saúde Búzios Design Tokens ── */
+  /* Azul Búzios #0047BB → oklch(0.38 0.19 264) */
+  --background: oklch(1 0 247);
+  /* ~#F9FAFB — quase branco */
+  --foreground: oklch(0.13 0.018 255);
+  /* slate-900 */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.13 0.018 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.018 255);
+  --primary: oklch(0.38 0.19 264);
+  /* #0047BB */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.965 0.006 247);
+  --secondary-foreground: oklch(0.25 0.01 255);
+  --muted: oklch(0.965 0.006 247);
+  --muted-foreground: oklch(0.50 0.014 255);
+  --accent: oklch(0.94 0.014 264);
+  --accent-foreground: oklch(0.38 0.19 264);
+  --destructive: oklch(0.54 0.22 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.92 0.006 247);
+  --input: oklch(0.96 0.006 247);
+  --ring: oklch(0.38 0.19 264 / 0.3);
+  --chart-1: oklch(0.38 0.19 264);
+  --chart-2: oklch(0.58 0.15 180);
+  --chart-3: oklch(0.54 0.22 27);
+  --chart-4: oklch(0.68 0.15 85);
+  --chart-5: oklch(0.5 0.15 300);
+
+  /* Radius orgânico — base 20px */
+  --radius: 1.25rem;
+  /* cards e containers = rounded-[20px] */
+
+  /* Sidebar */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.13 0.018 255);
+  --sidebar-primary: oklch(0.38 0.19 264);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.94 0.014 264);
+  --sidebar-accent-foreground: oklch(0.38 0.19 264);
+  --sidebar-border: oklch(0.92 0.006 247);
+  --sidebar-ring: oklch(0.38 0.19 264);
+
+  /* Contexto */
+  --hospital: oklch(0.38 0.19 264);
+  --hospital-foreground: oklch(0.99 0 0);
+  --aps: oklch(0.55 0.18 160);
+  --aps-foreground: oklch(0.99 0 0);
+  --admin: oklch(0.50 0.14 280);
+  --admin-foreground: oklch(0.99 0 0);
+  --warning: oklch(0.75 0.15 75);
+  --warning-foreground: oklch(0.25 0.05 75);
+  --success: oklch(0.56 0.18 145);
+  --success-foreground: oklch(0.99 0 0);
+
+  /* Shadows glassmorphism-light */
+  --shadow-soft: 0 8px 32px rgb(0 71 187 / 0.06), 0 2px 8px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 4px 24px rgb(0 0 0 / 0.05), 0 1px 4px rgb(0 0 0 / 0.04);
+  --shadow-float: 0 16px 48px rgb(0 71 187 / 0.10), 0 4px 12px rgb(0 0 0 / 0.06);
+
+  /* Gradiente identidade */
+  --gradient-brand: linear-gradient(135deg, #0047BB 0%, #2563EB 100%);
+  --gradient-brand-subtle: linear-gradient(135deg, oklch(0.38 0.19 264 / 0.08) 0%, oklch(0.50 0.20 252 / 0.04) 100%);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    /* Remove bordas padrão do shadcn — usamos sombras para profundidade */
+    @apply border-transparent outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Títulos com letter-spacing médico */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight text-slate-900;
+    letter-spacing: -0.01em;
+  }
+
+  /* Todos os ícones Lucide herdam stroke-width 1.25 via CSS */
+  svg[data-lucide],
+  .lucide {
+    stroke-width: 1.25;
+  }
+
+  /* Cards — sem borda, só sombra soft */
+  [data-card],
+  .card-premium {
+    border: none;
+    box-shadow: var(--shadow-soft);
+    border-radius: 20px;
+  }
+
+  /* Foco suave em inputs */
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px oklch(0.38 0.19 264 / 0.14);
+    border-color: oklch(0.38 0.19 264 / 0.5) !important;
+  }
+
+  /* Dados críticos (sinais vitais) — fonte condensada bold */
+  .vital-value {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+
+  /* Gradiente identidade Saúde Búzios */
+  .gradient-brand {
+    background: var(--gradient-brand);
+  }
+
+  .gradient-brand-text {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Sombra soft sem borda */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+    border: none !important;
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+    border: none !important;
+  }
+
+  .shadow-float {
+    box-shadow: var(--shadow-float);
+    border: none !important;
+  }
+}
