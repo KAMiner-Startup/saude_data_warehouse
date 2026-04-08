@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Building2, HeartPulse, LayoutDashboard, ArrowRight } from "lucide-react"
+import { Building2, HeartPulse, LayoutDashboard, ClipboardList, ArrowRight } from "lucide-react"
 
 const perfis = [
   {
@@ -43,6 +43,19 @@ const perfis = [
     corBorda: "oklch(0.50 0.14 280 / 0.18)",
     href: "/login/administrativo",
     tag: "Gestores, Coordenadores, Secretaria",
+  },
+  {
+    id: "recepcao",
+    titulo: "Portal de Recepção",
+    subtitulo: "Recepção e Atendimento",
+    descricao:
+      "Acesso para recepcionistas. Gerencie o fluxo de chegada de pacientes e o atendimento administrativo da unidade.",
+    icone: ClipboardList,
+    cor: "oklch(0.62 0.15 50)",
+    corFundo: "oklch(0.62 0.15 50 / 0.08)",
+    corBorda: "oklch(0.62 0.15 50 / 0.18)",
+    href: "/login/recepcao",
+    tag: "Recepcionistas",
   },
 ]
 
@@ -88,7 +101,7 @@ export default function HomePage() {
         </div>
 
         {/* Cards de perfil */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full">
           {perfis.map((perfil) => {
             const Icone = perfil.icone
             return (

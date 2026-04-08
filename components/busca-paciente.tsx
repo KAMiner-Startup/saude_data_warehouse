@@ -74,16 +74,19 @@ interface BuscaPacienteProps {
   value?: string
   onClear?: () => void
   basePath?: string
+  patients?: Paciente[]
 }
 
-export function BuscaPaciente({ 
-  modo = "navegacao", 
+export function BuscaPaciente({
+  modo = "navegacao",
   onSelectPaciente,
   placeholder = "Digite CPF, CNS ou nome do paciente...",
   value,
   onClear,
-  basePath = "/portal-hospitalar"
+  basePath = "/portal-hospitalar",
+  patients,
 }: BuscaPacienteProps) {
+  const lista = patients ?? pacientesMock
   const [termoBusca, setTermoBusca] = useState(value || "")
   const [resultados, setResultados] = useState<Paciente[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -110,7 +113,7 @@ export function BuscaPaciente({
     setIsLoading(true)
     const timeoutId = setTimeout(() => {
       const termoLower = termoBusca.toLowerCase()
-      const filtered = pacientesMock.filter(
+      const filtered = lista.filter(
         (p) =>
           p.nome.toLowerCase().includes(termoLower) ||
           p.cpf.replace(/\D/g, "").includes(termoBusca.replace(/\D/g, "")) ||

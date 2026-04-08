@@ -25,11 +25,27 @@ import ApsPacientesPage from "@/app/portal-atencao-basica/pacientes/page"
 import ApsPacientePage from "@/app/portal-atencao-basica/paciente/[id]/page"
 import ApsVisitasPage from "@/app/portal-atencao-basica/visitas/page"
 
+import PortalRecepcaoLayout from "@/app/portal-recepcao/layout"
+import RecepcaoDashboardPage from "@/app/portal-recepcao/dashboard/page"
+import RecepcaoPacientesPage from "@/app/portal-recepcao/pacientes/page"
+import RecepcaoPacientePage from "@/app/portal-recepcao/paciente/[id]/page"
+import RecepcaoUnidadesPage from "@/app/portal-recepcao/unidades/page"
+import RecepcaoAgentesPage from "@/app/portal-recepcao/agentes/page"
+import LoginRecepcaoPage from "@/app/login/recepcao/page"
+
 import PortalHospitalarLayout from "@/app/portal-hospitalar/layout"
 import HospitalarDashboardPage from "@/app/portal-hospitalar/dashboard/page"
 import HospitalarMovimentacoesPage from "@/app/portal-hospitalar/movimentacoes/page"
 import HospitalarPacientePage from "@/app/portal-hospitalar/paciente/[id]/page"
 import HospitalarPacientesRecentesPage from "@/app/portal-hospitalar/pacientes-recentes/page"
+
+function RecepcaoLayoutRoute() {
+  return (
+    <PortalRecepcaoLayout>
+      <Outlet />
+    </PortalRecepcaoLayout>
+  )
+}
 
 function AdminLayoutRoute() {
   return (
@@ -61,6 +77,7 @@ export function AppRouter() {
       <Route path="/" element={<HomePage />} />
 
       <Route path="/login/administrativo" element={<LoginAdministrativoPage />} />
+      <Route path="/login/recepcao" element={<LoginRecepcaoPage />} />
       <Route path="/login/aps" element={<LoginApsPage />} />
       <Route path="/login/hospitalar" element={<LoginHospitalarPage />} />
 
@@ -93,6 +110,15 @@ export function AppRouter() {
         <Route path="movimentacoes" element={<HospitalarMovimentacoesPage />} />
         <Route path="paciente/:id" element={<HospitalarPacientePage />} />
         <Route path="pacientes-recentes" element={<HospitalarPacientesRecentesPage />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
+      </Route>
+
+      <Route path="/portal-recepcao" element={<RecepcaoLayoutRoute />}>
+        <Route path="dashboard" element={<RecepcaoDashboardPage />} />
+        <Route path="pacientes" element={<RecepcaoPacientesPage />} />
+        <Route path="paciente/:id" element={<RecepcaoPacientePage />} />
+        <Route path="unidades" element={<RecepcaoUnidadesPage />} />
+        <Route path="agentes" element={<RecepcaoAgentesPage />} />
         <Route index element={<Navigate to="dashboard" replace />} />
       </Route>
 
