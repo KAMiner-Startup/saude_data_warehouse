@@ -4,9 +4,6 @@ import { useParams, useRouter } from "next/navigation"
 import {
   ArrowLeft,
   User,
-  Calendar,
-  MapPin,
-  Phone,
   Activity,
   Pill,
   Stethoscope,
@@ -15,519 +12,42 @@ import {
   Heart,
   Droplets,
   Scale,
-  Ruler
+  Ruler,
+  FlaskConical,
+  Syringe,
+  MessageSquare,
+  Bell,
+  ClipboardList,
+  ExternalLink,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { LinhaDoTempo, type EventoTimeline } from "@/components/linha-do-tempo"
+import { LinhaDoTempo } from "@/components/linha-do-tempo"
+import { pacientesData, timelineData } from "./dados-mockados"
 
-// Dados mockados da linha do tempo por paciente
-const timelineData: Record<string, EventoTimeline[]> = {
-  "1": [
-    {
-      id: "evt-1-1",
-      data: "01/03/2026",
-      dataCompleta: "01/03/2026 14:30",
-      tipo: "consulta",
-      titulo: "Consulta Medica - Retorno",
-      local: "UBS Centro",
-      profissional: "Dra. Ana Paula",
-      descricao: "Paciente retorna para acompanhamento de hipertensao e diabetes. Apresenta melhora nos niveis pressao. Ajustada medicacao.",
-      status: "concluido",
-      detalhes: [
-        { label: "Pressao Arterial", valor: "140/90 mmHg" },
-        { label: "Glicemia", valor: "126 mg/dL" },
-        { label: "Proxima consulta", valor: "01/04/2026" },
-      ]
-    },
-    {
-      id: "evt-1-2",
-      data: "15/02/2026",
-      dataCompleta: "15/02/2026 08:00",
-      tipo: "alta",
-      titulo: "Alta Hospitalar",
-      local: "Hospital Municipal de Buzios",
-      profissional: "Dr. Carlos Mendes",
-      cid: "I10 - Hipertensao Essencial",
-      descricao: "Paciente recebe alta apos estabilizacao do quadro hipertensivo. Orientada sobre medicacao e retorno.",
-      status: "concluido",
-      detalhes: [
-        { label: "Dias de internacao", valor: "5 dias" },
-        { label: "Condicao na alta", valor: "Estavel" },
-        { label: "Encaminhamento", valor: "UBS Centro - Acompanhamento" },
-      ]
-    },
-    {
-      id: "evt-1-3",
-      data: "10/02/2026",
-      dataCompleta: "10/02/2026 22:15",
-      tipo: "internacao",
-      titulo: "Internacao - UTI",
-      local: "Hospital Municipal de Buzios",
-      profissional: "Dr. Carlos Mendes",
-      cid: "I10 - Hipertensao Essencial",
-      descricao: "Paciente admitida com crise hipertensiva severa. Pressao 220/140 mmHg. Iniciado protocolo de emergencia.",
-      status: "concluido",
-      detalhes: [
-        { label: "Setor", valor: "UTI" },
-        { label: "Pressao na admissao", valor: "220/140 mmHg" },
-        { label: "Sintomas", valor: "Cefaleia intensa, visao turva" },
-      ]
-    },
-    {
-      id: "evt-1-4",
-      data: "10/02/2026",
-      dataCompleta: "10/02/2026 21:30",
-      tipo: "urgencia",
-      titulo: "Atendimento de Urgencia",
-      local: "UPA Buzios",
-      profissional: "Dr. Roberto Lima",
-      descricao: "Paciente chega com queixa de cefaleia intensa e mal-estar. Verificada pressao elevada. Encaminhada para internacao.",
-      status: "concluido",
-      detalhes: [
-        { label: "Classificacao", valor: "Vermelho - Emergencia" },
-        { label: "Tempo de espera", valor: "Imediato" },
-        { label: "Conduta", valor: "Transferencia para Hospital Municipal" },
-      ]
-    },
-    {
-      id: "evt-1-5",
-      data: "05/01/2026",
-      dataCompleta: "05/01/2026 07:30",
-      tipo: "exame",
-      titulo: "Exames Laboratoriais",
-      local: "Laboratorio Central",
-      profissional: "-",
-      resultado: "Hemoglobina glicada: 8,2% (elevada). Glicemia jejum: 145 mg/dL. Colesterol total: 220 mg/dL.",
-      status: "concluido",
-      detalhes: [
-        { label: "Hemoglobina Glicada", valor: "8,2% (Ref: < 7%)" },
-        { label: "Glicemia Jejum", valor: "145 mg/dL (Ref: < 100)" },
-        { label: "Colesterol Total", valor: "220 mg/dL (Ref: < 200)" },
-        { label: "Triglicerideos", valor: "180 mg/dL (Ref: < 150)" },
-      ]
-    },
-    {
-      id: "evt-1-6",
-      data: "20/12/2025",
-      dataCompleta: "20/12/2025 10:00",
-      tipo: "consulta",
-      titulo: "Consulta Medica - Rotina",
-      local: "UBS Centro",
-      profissional: "Dra. Ana Paula",
-      descricao: "Consulta de rotina para acompanhamento de condicoes cronicas. Solicitados exames de controle.",
-      status: "concluido",
-    },
-  ],
-  "2": [
-    {
-      id: "evt-2-1",
-      data: "28/02/2026",
-      dataCompleta: "28/02/2026 06:00",
-      tipo: "alta",
-      titulo: "Alta Hospitalar",
-      local: "Hospital Municipal de Buzios",
-      profissional: "Dr. Joao Silva",
-      cid: "I50 - Insuficiencia Cardiaca",
-      descricao: "Alta apos compensacao do quadro de IC. Paciente orientado sobre restricao hidrica e sodio.",
-      status: "concluido",
-      detalhes: [
-        { label: "Dias de internacao", valor: "8 dias" },
-        { label: "Peso na alta", valor: "75 kg (-4kg)" },
-        { label: "Fracao de ejecao", valor: "35%" },
-      ]
-    },
-    {
-      id: "evt-2-2",
-      data: "20/02/2026",
-      dataCompleta: "20/02/2026 03:45",
-      tipo: "internacao",
-      titulo: "Internacao - Enfermaria",
-      local: "Hospital Municipal de Buzios",
-      profissional: "Dr. Joao Silva",
-      cid: "I50 - Insuficiencia Cardiaca",
-      descricao: "Internacao por descompensacao de IC. Paciente com dispneia aos minimos esforcos e edema de MMII.",
-      status: "concluido",
-      detalhes: [
-        { label: "Setor", valor: "Enfermaria Cardiologica" },
-        { label: "Peso na admissao", valor: "79 kg" },
-        { label: "Saturacao", valor: "89% em ar ambiente" },
-      ]
-    },
-    {
-      id: "evt-2-3",
-      data: "20/02/2026",
-      dataCompleta: "20/02/2026 02:30",
-      tipo: "urgencia",
-      titulo: "Atendimento de Urgencia",
-      local: "UPA Buzios",
-      profissional: "Dra. Maria Santos",
-      descricao: "Paciente chega com dispneia intensa, nao conseguindo deitar. Edema importante em membros inferiores.",
-      status: "concluido",
-      detalhes: [
-        { label: "Classificacao", valor: "Amarelo - Urgente" },
-        { label: "Saturacao", valor: "88%" },
-        { label: "Conduta", valor: "Oxigenoterapia e transferencia" },
-      ]
-    },
-    {
-      id: "evt-2-4",
-      data: "15/02/2026",
-      dataCompleta: "15/02/2026 09:00",
-      tipo: "consulta",
-      titulo: "Consulta Medica",
-      local: "UBS Manguinhos",
-      profissional: "Dr. Pedro Costa",
-      descricao: "Paciente comparece para consulta de rotina. Refere piora da dispneia nos ultimos dias.",
-      status: "concluido",
-    },
-  ],
-  "3": [
-    {
-      id: "evt-3-1",
-      data: "03/03/2026",
-      dataCompleta: "03/03/2026 08:00",
-      tipo: "pre_natal",
-      titulo: "Consulta Pre-Natal - 8a",
-      local: "UBS Geriba",
-      profissional: "Enf. Carla Oliveira",
-      descricao: "Oitava consulta de pre-natal. Gestacao de 32 semanas. Feto em apresentacao cefalica. BCF: 140 bpm.",
-      status: "concluido",
-      detalhes: [
-        { label: "Idade Gestacional", valor: "32 semanas" },
-        { label: "BCF", valor: "140 bpm" },
-        { label: "Altura Uterina", valor: "30 cm" },
-        { label: "Ganho de peso", valor: "+8 kg" },
-      ]
-    },
-    {
-      id: "evt-3-2",
-      data: "20/02/2026",
-      dataCompleta: "20/02/2026 14:00",
-      tipo: "exame",
-      titulo: "Ultrassom Obstetrico Morfologico",
-      local: "Hospital Municipal de Buzios",
-      profissional: "Dr. Andre Ferreira",
-      resultado: "Feto unico, vivo, em apresentacao cefalica. Biometria compativel com 30 semanas. Placenta posterior grau I. ILA normal.",
-      status: "concluido",
-      detalhes: [
-        { label: "Peso estimado", valor: "1.450g" },
-        { label: "Apresentacao", valor: "Cefalica" },
-        { label: "Placenta", valor: "Posterior, grau I" },
-        { label: "Liquido amniotico", valor: "Normal (ILA 12cm)" },
-      ]
-    },
-    {
-      id: "evt-3-3",
-      data: "06/02/2026",
-      dataCompleta: "06/02/2026 08:30",
-      tipo: "pre_natal",
-      titulo: "Consulta Pre-Natal - 7a",
-      local: "UBS Geriba",
-      profissional: "Dra. Lucia Mendes",
-      descricao: "Setima consulta de pre-natal. Paciente com queixa de anemia. Prescrito sulfato ferroso.",
-      status: "concluido",
-    },
-  ],
-  "4": [
-    {
-      id: "evt-4-1",
-      data: "25/02/2026",
-      dataCompleta: "25/02/2026 08:00",
-      tipo: "quimioterapia",
-      titulo: "Sessao de Quimioterapia - Ciclo 4",
-      local: "Hospital Regional",
-      profissional: "Dra. Fernanda Alves",
-      descricao: "Quarto ciclo de quimioterapia. Paciente tolerou bem a infusao. Sem intercorrencias.",
-      status: "concluido",
-      detalhes: [
-        { label: "Protocolo", valor: "Docetaxel" },
-        { label: "Ciclo", valor: "4 de 6" },
-        { label: "Duracao", valor: "3 horas" },
-        { label: "Efeitos colaterais", valor: "Nausea leve" },
-      ]
-    },
-    {
-      id: "evt-4-2",
-      data: "18/02/2026",
-      dataCompleta: "18/02/2026 10:00",
-      tipo: "consulta",
-      titulo: "Consulta Oncologia",
-      local: "Hospital Regional",
-      profissional: "Dr. Marcos Pereira",
-      descricao: "Avaliacao pre-quimioterapia. PSA em queda. Paciente tolerando bem o tratamento.",
-      status: "concluido",
-      detalhes: [
-        { label: "PSA atual", valor: "8,5 ng/mL" },
-        { label: "PSA anterior", valor: "12,3 ng/mL" },
-        { label: "Resposta", valor: "Parcial" },
-      ]
-    },
-    {
-      id: "evt-4-3",
-      data: "10/02/2026",
-      dataCompleta: "10/02/2026 07:00",
-      tipo: "exame",
-      titulo: "Exames Laboratoriais Pre-QT",
-      local: "Laboratorio Central",
-      profissional: "-",
-      resultado: "Hemograma dentro dos parametros para quimioterapia. Funcao renal e hepatica preservadas.",
-      status: "concluido",
-    },
-  ],
-  "5": [
-    {
-      id: "evt-5-1",
-      data: "02/03/2026",
-      dataCompleta: "02/03/2026 09:00",
-      tipo: "consulta",
-      titulo: "Consulta Medica - Retorno",
-      local: "UBS Armacao",
-      profissional: "Dr. Paulo Henrique",
-      descricao: "Retorno para avaliacao de asma. Paciente refere melhora com uso regular da medicacao.",
-      status: "concluido",
-    },
-    {
-      id: "evt-5-2",
-      data: "15/01/2026",
-      dataCompleta: "15/01/2026 23:00",
-      tipo: "urgencia",
-      titulo: "Atendimento de Urgencia",
-      local: "UPA Buzios",
-      profissional: "Dra. Cristina Lima",
-      descricao: "Paciente com crise de asma moderada. Realizada nebulizacao e prescrito corticoide oral.",
-      status: "concluido",
-      detalhes: [
-        { label: "Classificacao", valor: "Amarelo - Urgente" },
-        { label: "Peak Flow", valor: "60% do previsto" },
-        { label: "Conduta", valor: "Nebulizacao + Corticoide" },
-      ]
-    },
-  ],
-  "6": [
-    {
-      id: "evt-6-1",
-      data: "27/02/2026",
-      dataCompleta: "27/02/2026 14:00",
-      tipo: "fisioterapia",
-      titulo: "Sessao de Fisioterapia",
-      local: "Centro de Reabilitacao",
-      profissional: "Ft. Marina Costa",
-      descricao: "Decima sessao de fisioterapia. Paciente apresenta melhora da mobilidade lombar.",
-      status: "concluido",
-      detalhes: [
-        { label: "Sessao", valor: "10 de 15" },
-        { label: "Exercicios", valor: "Fortalecimento e alongamento" },
-        { label: "Evolucao", valor: "Satisfatoria" },
-      ]
-    },
-    {
-      id: "evt-6-2",
-      data: "10/02/2026",
-      dataCompleta: "10/02/2026 10:00",
-      tipo: "consulta",
-      titulo: "Consulta Medica",
-      local: "UBS Centro",
-      profissional: "Dr. Felipe Souza",
-      descricao: "Paciente com lombalgia cronica. Encaminhado para fisioterapia e solicitado RX de coluna.",
-      status: "concluido",
-    },
-  ],
+// Cores da classificação de risco (triagem Manchester)
+const corTriagem: Record<string, { bg: string; text: string; label: string }> = {
+  vermelho: { bg: "bg-red-100", text: "text-red-700", label: "Vermelho - Emergência" },
+  laranja: { bg: "bg-orange-100", text: "text-orange-700", label: "Laranja - Muito Urgente" },
+  amarelo: { bg: "bg-yellow-100", text: "text-yellow-700", label: "Amarelo - Urgente" },
+  verde: { bg: "bg-green-100", text: "text-green-700", label: "Verde - Pouco Urgente" },
+  azul: { bg: "bg-blue-100", text: "text-blue-700", label: "Azul - Não Urgente" },
 }
 
-// Dados mockados do paciente
-const pacientesData: Record<string, {
-  id: string
-  nome: string
-  nomeMae: string
-  cpf: string
-  cns: string
-  dataNascimento: string
-  idade: number
-  sexo: string
-  telefone: string
-  endereco: string
-  unidadeReferencia: string
-  equipeReferencia: string
-  condicoesAtivas: string[]
-  alergias: string[]
-  medicamentosUso: { nome: string; dosagem: string; frequencia: string }[]
-  ultimosAtendimentos: { data: string; tipo: string; local: string; profissional: string }[]
-  sinaisVitais: { pressaoArterial: string; frequenciaCardiaca: string; peso: string; altura: string; imc: string }
-  examesPendentes: string[]
-  alertasAtivos: number
-}> = {
-  "1": {
-    id: "1",
-    nome: "Maria Silva Santos",
-    nomeMae: "Ana Maria Silva",
-    cpf: "123.456.789-00",
-    cns: "898 0012 3456 7890",
-    dataNascimento: "15/03/1985",
-    idade: 40,
-    sexo: "Feminino",
-    telefone: "(22) 99999-1234",
-    endereco: "Rua das Flores, 123 - Centro, Búzios/RJ",
-    unidadeReferencia: "UBS Centro",
-    equipeReferencia: "Equipe 001 - ESF Centro",
-    condicoesAtivas: ["Hipertensão Arterial", "Diabetes Mellitus Tipo 2", "Obesidade"],
-    alergias: ["Dipirona", "Penicilina"],
-    medicamentosUso: [
-      { nome: "Losartana", dosagem: "50mg", frequencia: "1x ao dia" },
-      { nome: "Metformina", dosagem: "850mg", frequencia: "2x ao dia" },
-      { nome: "AAS", dosagem: "100mg", frequencia: "1x ao dia" }
-    ],
-    ultimosAtendimentos: [
-      { data: "01/03/2026", tipo: "Consulta Médica", local: "UBS Centro", profissional: "Dra. Ana Paula" },
-      { data: "15/02/2026", tipo: "Internação", local: "Hospital Municipal", profissional: "Dr. Carlos" },
-      { data: "10/02/2026", tipo: "Urgência", local: "UPA Búzios", profissional: "Dr. Roberto" },
-      { data: "05/01/2026", tipo: "Exames Laboratoriais", local: "Laboratório Central", profissional: "-" }
-    ],
-    sinaisVitais: { pressaoArterial: "140/90 mmHg", frequenciaCardiaca: "78 bpm", peso: "82 kg", altura: "1,65 m", imc: "30,1" },
-    examesPendentes: ["Hemoglobina Glicada", "Perfil Lipídico"],
-    alertasAtivos: 2
-  },
-  "2": {
-    id: "2",
-    nome: "José Oliveira Costa",
-    nomeMae: "Francisca Oliveira",
-    cpf: "456.789.123-11",
-    cns: "702 0034 5678 1234",
-    dataNascimento: "22/07/1972",
-    idade: 53,
-    sexo: "Masculino",
-    telefone: "(22) 98888-5678",
-    endereco: "Av. José Bento, 456 - Manguinhos, Búzios/RJ",
-    unidadeReferencia: "UBS Manguinhos",
-    equipeReferencia: "Equipe 003 - ESF Manguinhos",
-    condicoesAtivas: ["Insuficiência Cardíaca", "DPOC", "Tabagismo"],
-    alergias: [],
-    medicamentosUso: [
-      { nome: "Carvedilol", dosagem: "25mg", frequencia: "2x ao dia" },
-      { nome: "Furosemida", dosagem: "40mg", frequencia: "1x ao dia" },
-      { nome: "Enalapril", dosagem: "10mg", frequencia: "2x ao dia" },
-      { nome: "Salbutamol", dosagem: "100mcg", frequencia: "SOS" }
-    ],
-    ultimosAtendimentos: [
-      { data: "28/02/2026", tipo: "Internação", local: "Hospital Municipal", profissional: "Dr. João Silva" },
-      { data: "20/02/2026", tipo: "Urgência", local: "UPA Búzios", profissional: "Dra. Maria" },
-      { data: "15/02/2026", tipo: "Consulta Médica", local: "UBS Manguinhos", profissional: "Dr. Pedro" }
-    ],
-    sinaisVitais: { pressaoArterial: "130/85 mmHg", frequenciaCardiaca: "88 bpm", peso: "75 kg", altura: "1,72 m", imc: "25,4" },
-    examesPendentes: ["Ecocardiograma", "Espirometria"],
-    alertasAtivos: 3
-  },
-  "3": {
-    id: "3",
-    nome: "Ana Carolina Pereira",
-    nomeMae: "Lucia Pereira dos Santos",
-    cpf: "789.123.456-22",
-    cns: "123 0056 7890 5678",
-    dataNascimento: "08/11/1990",
-    idade: 35,
-    sexo: "Feminino",
-    telefone: "(22) 97777-9012",
-    endereco: "Rua dos Pescadores, 78 - Geribá, Búzios/RJ",
-    unidadeReferencia: "UBS Geribá",
-    equipeReferencia: "Equipe 002 - ESF Geribá",
-    condicoesAtivas: ["Gestante (32 semanas)", "Anemia Ferropriva"],
-    alergias: ["Látex"],
-    medicamentosUso: [
-      { nome: "Sulfato Ferroso", dosagem: "300mg", frequencia: "1x ao dia" },
-      { nome: "Ácido Fólico", dosagem: "5mg", frequencia: "1x ao dia" }
-    ],
-    ultimosAtendimentos: [
-      { data: "03/03/2026", tipo: "Pré-Natal", local: "UBS Geribá", profissional: "Enf. Carla" },
-      { data: "20/02/2026", tipo: "Ultrassom Obstétrico", local: "Hospital Municipal", profissional: "Dr. André" },
-      { data: "06/02/2026", tipo: "Pré-Natal", local: "UBS Geribá", profissional: "Dra. Lucia" }
-    ],
-    sinaisVitais: { pressaoArterial: "110/70 mmHg", frequenciaCardiaca: "82 bpm", peso: "68 kg", altura: "1,60 m", imc: "26,6" },
-    examesPendentes: ["Glicemia de Jejum", "Urina Tipo I"],
-    alertasAtivos: 1
-  },
-  "4": {
-    id: "4",
-    nome: "Carlos Eduardo Lima",
-    nomeMae: "Rosa Maria Lima",
-    cpf: "321.654.987-33",
-    cns: "456 0078 1234 9012",
-    dataNascimento: "30/01/1968",
-    idade: 58,
-    sexo: "Masculino",
-    telefone: "(22) 96666-3456",
-    endereco: "Rua da Praia, 200 - Ferradura, Búzios/RJ",
-    unidadeReferencia: "UBS Ferradura",
-    equipeReferencia: "Equipe 004 - ESF Ferradura",
-    condicoesAtivas: ["Câncer de Próstata (em tratamento)", "Hipertensão Arterial"],
-    alergias: ["Contraste Iodado"],
-    medicamentosUso: [
-      { nome: "Bicalutamida", dosagem: "50mg", frequencia: "1x ao dia" },
-      { nome: "Anlodipino", dosagem: "5mg", frequencia: "1x ao dia" }
-    ],
-    ultimosAtendimentos: [
-      { data: "25/02/2026", tipo: "Quimioterapia", local: "Hospital Regional", profissional: "Dra. Fernanda" },
-      { data: "18/02/2026", tipo: "Consulta Oncologia", local: "Hospital Regional", profissional: "Dr. Marcos" },
-      { data: "10/02/2026", tipo: "Exames Laboratoriais", local: "Laboratório Central", profissional: "-" }
-    ],
-    sinaisVitais: { pressaoArterial: "125/80 mmHg", frequenciaCardiaca: "72 bpm", peso: "70 kg", altura: "1,75 m", imc: "22,9" },
-    examesPendentes: ["PSA", "Hemograma Completo"],
-    alertasAtivos: 0
-  },
-  "5": {
-    id: "5",
-    nome: "Mariana Souza Rodrigues",
-    nomeMae: "Teresa Souza",
-    cpf: "654.987.321-44",
-    cns: "789 0090 5678 3456",
-    dataNascimento: "12/09/1995",
-    idade: 30,
-    sexo: "Feminino",
-    telefone: "(22) 95555-7890",
-    endereco: "Rua do Sol, 55 - Armação, Búzios/RJ",
-    unidadeReferencia: "UBS Armação",
-    equipeReferencia: "Equipe 005 - ESF Armação",
-    condicoesAtivas: ["Asma", "Rinite Alérgica"],
-    alergias: ["Ibuprofeno", "Camarão"],
-    medicamentosUso: [
-      { nome: "Budesonida", dosagem: "200mcg", frequencia: "2x ao dia" },
-      { nome: "Loratadina", dosagem: "10mg", frequencia: "1x ao dia" }
-    ],
-    ultimosAtendimentos: [
-      { data: "02/03/2026", tipo: "Consulta Médica", local: "UBS Armação", profissional: "Dr. Paulo" },
-      { data: "15/01/2026", tipo: "Urgência", local: "UPA Búzios", profissional: "Dra. Cristina" }
-    ],
-    sinaisVitais: { pressaoArterial: "115/75 mmHg", frequenciaCardiaca: "70 bpm", peso: "58 kg", altura: "1,62 m", imc: "22,1" },
-    examesPendentes: [],
-    alertasAtivos: 0
-  },
-  "6": {
-    id: "6",
-    nome: "José Maria da Silva",
-    nomeMae: "Joana da Silva",
-    cpf: "111.222.333-44",
-    cns: "111 2223 3344 5556",
-    dataNascimento: "05/05/1980",
-    idade: 45,
-    sexo: "Masculino",
-    telefone: "(22) 94444-1111",
-    endereco: "Rua Nova, 300 - Centro, Búzios/RJ",
-    unidadeReferencia: "UBS Centro",
-    equipeReferencia: "Equipe 001 - ESF Centro",
-    condicoesAtivas: ["Lombalgia Crônica"],
-    alergias: [],
-    medicamentosUso: [
-      { nome: "Paracetamol", dosagem: "750mg", frequencia: "SOS" }
-    ],
-    ultimosAtendimentos: [
-      { data: "27/02/2026", tipo: "Fisioterapia", local: "Centro de Reabilitação", profissional: "Ft. Marina" },
-      { data: "10/02/2026", tipo: "Consulta Médica", local: "UBS Centro", profissional: "Dr. Felipe" }
-    ],
-    sinaisVitais: { pressaoArterial: "120/80 mmHg", frequenciaCardiaca: "68 bpm", peso: "78 kg", altura: "1,78 m", imc: "24,6" },
-    examesPendentes: ["Raio-X Coluna Lombar"],
-    alertasAtivos: 0
-  }
+// Cores da prioridade dos lembretes
+const corPrioridade: Record<string, { dot: string; label: string }> = {
+  alta: { dot: "bg-red-500", label: "Alta" },
+  media: { dot: "bg-yellow-500", label: "Média" },
+  baixa: { dot: "bg-green-500", label: "Baixa" },
+}
+
+// Cores do status dos exames
+const corStatusExame: Record<string, { bg: string; text: string }> = {
+  normal: { bg: "bg-green-50", text: "text-green-700" },
+  alterado: { bg: "bg-yellow-50", text: "text-yellow-700" },
+  critico: { bg: "bg-red-50", text: "text-red-700" },
 }
 
 export default function PacientePage() {
@@ -624,11 +144,85 @@ export default function PacientePage() {
         </CardContent>
       </Card>
 
-      {/* Grid de Indicadores — Sinais Vitais */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {/* Triagem (RF-FE-02.11) - exibe apenas quando existir */}
+      {paciente.triagem && (
+        <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
+          <CardHeader>
+            <CardTitle className="text-base font-semibold flex items-center gap-2">
+              <ClipboardList className="w-4 h-4 text-primary" strokeWidth={1.25} />
+              Última Triagem
+            </CardTitle>
+            <CardDescription>Dados da classificação de risco - {paciente.triagem.data}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold ${corTriagem[paciente.triagem.classificacao].bg} ${corTriagem[paciente.triagem.classificacao].text}`}>
+                  {corTriagem[paciente.triagem.classificacao].label}
+                </span>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">Queixa principal</p>
+                <p className="text-sm font-medium">{paciente.triagem.queixaPrincipal}</p>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="space-y-0.5">
+                  <p className="text-xs text-muted-foreground">Pressão Arterial</p>
+                  <p className="text-sm font-semibold">{paciente.triagem.pressaoArterial}</p>
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-xs text-muted-foreground">Temperatura</p>
+                  <p className="text-sm font-semibold">{paciente.triagem.temperatura}</p>
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-xs text-muted-foreground">Freq. Cardíaca</p>
+                  <p className="text-sm font-semibold">{paciente.triagem.frequenciaCardiaca}</p>
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-xs text-muted-foreground">Saturação</p>
+                  <p className="text-sm font-semibold">{paciente.triagem.saturacao}</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Lembretes Clínicos (RF-FE-02.10) */}
+      {paciente.lembretesClinicas.length > 0 && (
+        <Card className="rounded-[20px] border-none border-l-4" style={{ boxShadow: "var(--shadow-soft)" }}>
+          <CardHeader>
+            <CardTitle className="text-base font-semibold flex items-center gap-2">
+              <Bell className="w-4 h-4 text-amber-500" strokeWidth={1.25} />
+              Lembretes Clínicos
+            </CardTitle>
+            <CardDescription>Alertas e observações associadas ao paciente</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {paciente.lembretesClinicas.map((lembrete, index) => (
+                <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
+                  <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${corPrioridade[lembrete.prioridade].dot}`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground">{lembrete.descricao}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs text-muted-foreground">{lembrete.data}</span>
+                      <Badge variant="outline" className="text-xs capitalize">{lembrete.tipo}</Badge>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Grid de Indicadores - Sinais Vitais (RF-FE-02.05 - com glicemia) */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         {[
           { label: "Pressão Arterial", valor: paciente.sinaisVitais.pressaoArterial, sub: "Última aferição", Icon: Heart, color: "text-red-500", bg: "bg-red-50" },
           { label: "Freq. Cardíaca", valor: paciente.sinaisVitais.frequenciaCardiaca, sub: "Última aferição", Icon: Activity, color: "text-orange-500", bg: "bg-orange-50" },
+          { label: "Glicemia", valor: paciente.sinaisVitais.glicemia, sub: "Última aferição", Icon: Droplets, color: "text-violet-500", bg: "bg-violet-50" },
           { label: "Peso", valor: paciente.sinaisVitais.peso, sub: "Última aferição", Icon: Scale, color: "text-primary", bg: "bg-primary/8" },
           { label: "IMC", valor: paciente.sinaisVitais.imc, sub: `Altura: ${paciente.sinaisVitais.altura}`, Icon: Ruler, color: "text-emerald-600", bg: "bg-emerald-50" },
         ].map(({ label, valor, sub, Icon, color, bg }) => (
@@ -647,7 +241,7 @@ export default function PacientePage() {
         ))}
       </div>
 
-      {/* Condições e Alergias */}
+      {/* Condições Ativas (RF-FE-02.01 - com CID) e Alergias (RF-FE-02.04) */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
           <CardHeader>
@@ -659,11 +253,12 @@ export default function PacientePage() {
           </CardHeader>
           <CardContent>
             {paciente.condicoesAtivas.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
+              <div className="space-y-2">
                 {paciente.condicoesAtivas.map((condicao, index) => (
-                  <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-[12px] font-medium bg-primary/8 text-primary">
-                    {condicao}
-                  </span>
+                  <div key={index} className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-primary/5">
+                    <span className="text-sm font-medium text-foreground">{condicao.nome}</span>
+                    <Badge variant="outline" className="text-xs font-mono shrink-0">{condicao.cid}</Badge>
+                  </div>
                 ))}
               </div>
             ) : (
@@ -696,7 +291,37 @@ export default function PacientePage() {
         </Card>
       </div>
 
-      {/* Medicamentos em Uso */}
+      {/* Queixas Referidas (RF-FE-02.07) */}
+      <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
+        <CardHeader>
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 text-primary" strokeWidth={1.25} />
+            Queixas Referidas pelo Paciente
+          </CardTitle>
+          <CardDescription>Problemas e queixas relatados durante atendimentos</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {paciente.queixasReferidas.length > 0 ? (
+            <div className="space-y-3">
+              {paciente.queixasReferidas.map((queixa, index) => (
+                <div key={index} className="flex items-start gap-3 p-3 rounded-lg border border-border/50">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-foreground">{queixa.queixa}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {queixa.data} - {queixa.profissional}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">Nenhuma queixa registrada</p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Medicamentos em Uso (RF-FE-02.03) */}
       <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
         <CardHeader>
           <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -733,14 +358,57 @@ export default function PacientePage() {
         </CardContent>
       </Card>
 
+      {/* Exames Recentes (RF-FE-02.02) */}
+      <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
+        <CardHeader>
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <FlaskConical className="w-4 h-4 text-primary" strokeWidth={1.25} />
+            Exames Recentes
+          </CardTitle>
+          <CardDescription>Resultados dos últimos exames realizados</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {paciente.examesRecentes.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border/50 text-left">
+                    <th className="pb-2.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Exame</th>
+                    <th className="pb-2.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Data</th>
+                    <th className="pb-2.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Resultado</th>
+                    <th className="pb-2.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paciente.examesRecentes.map((exame, index) => (
+                    <tr key={index} className="border-b border-border/30 last:border-0">
+                      <td className="py-3 text-sm font-semibold text-slate-900">{exame.nome}</td>
+                      <td className="py-3 text-sm text-muted-foreground">{exame.data}</td>
+                      <td className="py-3 text-sm text-muted-foreground vital-value">{exame.resultado}</td>
+                      <td className="py-3">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize ${corStatusExame[exame.status].bg} ${corStatusExame[exame.status].text}`}>
+                          {exame.status === "critico" ? "Crítico" : exame.status === "alterado" ? "Alterado" : "Normal"}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">Nenhum exame recente registrado</p>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Exames Pendentes */}
       <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
         <CardHeader>
           <CardTitle className="text-base font-semibold flex items-center gap-2">
-            <Droplets className="w-4 h-4 text-amber-500" strokeWidth={1.25} />
+            <FileText className="w-4 h-4 text-amber-500" strokeWidth={1.25} />
             Exames Pendentes
           </CardTitle>
-          <CardDescription>Exames aguardando realizacao</CardDescription>
+          <CardDescription>Exames aguardando realização</CardDescription>
         </CardHeader>
         <CardContent>
           {paciente.examesPendentes.length > 0 ? (
@@ -758,7 +426,44 @@ export default function PacientePage() {
         </CardContent>
       </Card>
 
-      {/* Linha do Tempo */}
+      {/* Vacinação (RF-FE-02.06) */}
+      <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
+        <CardHeader>
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <Syringe className="w-4 h-4 text-primary" strokeWidth={1.25} />
+            Vacinação
+          </CardTitle>
+          <CardDescription>Histórico vacinal do paciente</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {paciente.vacinacao.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border/50 text-left">
+                    <th className="pb-2.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Vacina</th>
+                    <th className="pb-2.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Data</th>
+                    <th className="pb-2.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Dose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paciente.vacinacao.map((vacina, index) => (
+                    <tr key={index} className="border-b border-border/30 last:border-0">
+                      <td className="py-3 text-sm font-semibold text-slate-900">{vacina.nome}</td>
+                      <td className="py-3 text-sm text-muted-foreground">{vacina.data}</td>
+                      <td className="py-3 text-sm text-muted-foreground">{vacina.dose}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">Nenhum registro vacinal disponível</p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Linha do Tempo (RF-FE-02.08 e RF-FE-02.09) */}
       <LinhaDoTempo eventos={timelineData[id] || []} />
     </div>
   )

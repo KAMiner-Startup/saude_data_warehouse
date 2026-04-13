@@ -168,7 +168,7 @@ export default function MovimentacoesPage() {
           <CardTitle className="text-sm font-semibold">Filtrar por paciente</CardTitle>
         </CardHeader>
         <CardContent>
-          <BuscaPaciente onSelect={(p) => setPacienteFiltro(p)} />
+          <BuscaPaciente modo="filtro" onSelectPaciente={(p) => setPacienteFiltro(p)} />
           {pacienteFiltro && (
             <div className="flex items-center gap-2 mt-3">
               <Badge variant="secondary" className="text-[12px] rounded-lg">

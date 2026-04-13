@@ -14,7 +14,10 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "next/link": ["./src/compat/next-link.tsx"],
+      "next/navigation": ["./src/compat/next-navigation.ts"],
+      "next/image": ["./src/compat/next-image.tsx"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

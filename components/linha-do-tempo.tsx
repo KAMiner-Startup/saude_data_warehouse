@@ -16,6 +16,7 @@ import {
   FileText,
   Baby,
   Pill,
+  ExternalLink,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -226,6 +227,10 @@ function EventoCard({ evento, isLast }: { evento: EventoTimeline; isLast: boolea
                   ))}
                 </div>
               )}
+              <Button variant="outline" size="sm" className="mt-2 gap-1.5 text-xs">
+                <ExternalLink className="h-3 w-3" />
+                Ver registro completo
+              </Button>
             </div>
           )}
         </div>

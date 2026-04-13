@@ -321,8 +321,8 @@ function CardAlerta({
               href={`/portal-atencao-basica/paciente/${alerta.id}`}
               className="font-semibold text-sm text-foreground hover:underline"
               style={{}}
-              onMouseEnter={(e) => (e.currentTarget.style.color = APS_COLOR)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+              onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = APS_COLOR)}
+              onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.color = "")}
             >
               {alerta.paciente}
             </Link>
