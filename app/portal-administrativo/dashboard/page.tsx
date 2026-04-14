@@ -5,9 +5,20 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Activity, Users, Building2, HeartPulse, Bell, TrendingUp, TrendingDown,
-  Clock, CheckCircle, AlertCircle, ArrowRight, BarChart3
+  Clock, CheckCircle, AlertCircle, ArrowRight, BarChart3,
+  AlertTriangle, ExternalLink,
 } from "lucide-react"
 import Link from "next/link"
+import { cn } from "@/lib/utils"
+import {
+  type CategoriaAlertaOp,
+  MOCK_ALERTAS_OPERACIONAIS,
+  categoriaConfig,
+  prioridadeConfig,
+  statusAlertaOpConfig,
+  ordenarPorPrioridade,
+  contarPorCategoria,
+} from "../alertas-operacionais/dados-alertas-operacionais"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts"
 
 const ADMIN_COLOR = "oklch(0.50 0.14 280)"
@@ -39,20 +50,15 @@ const desempenhoUBS = [
   { nome: "UBS Armação", alertas: 7, respondidos: 6, taxa: 86 },
 ]
 
-const alertasRecentes = [
-  { paciente: "Maria Silva Santos", tipo: "Alta hospitalar", ubs: "UBS Centro", tempo: "2h", status: "pendente" },
-  { paciente: "José Oliveira Costa", tipo: "Internação urgência", ubs: "UBS Manguinhos", tempo: "5h", status: "em_andamento" },
-  { paciente: "Ana Carolina Pereira", tipo: "Resultado crítico", ubs: "UBS Geribá", tempo: "1d", status: "respondido" },
-  { paciente: "Carlos Eduardo Lima", tipo: "Retorno pós-cirúrgico", ubs: "UBS Ferradura", tempo: "2d", status: "pendente" },
-]
-
-const statusBadge: Record<string, { label: string; className: string }> = {
-  pendente: { label: "Pendente", className: "bg-destructive/10 text-destructive" },
-  em_andamento: { label: "Em andamento", className: "bg-primary/10 text-primary" },
-  respondido: { label: "Respondido", className: "bg-emerald-100 text-emerald-700" },
-}
+// Limite de alertas exibidos no dashboard
+const LIMITE_ALERTAS_DASHBOARD = 3
 
 export default function DashboardAdministrativoPage() {
+  const contadores = contarPorCategoria(MOCK_ALERTAS_OPERACIONAIS)
+  const alertasDestaque = ordenarPorPrioridade(
+    MOCK_ALERTAS_OPERACIONAIS.filter((a) => a.status !== "resolvido")
+  ).slice(0, LIMITE_ALERTAS_DASHBOARD)
+
   return (
     <div className="p-6 space-y-6">
       {/* Cabeçalho */}
@@ -188,7 +194,7 @@ export default function DashboardAdministrativoPage() {
         </Card>
       </div>
 
-      {/* Desempenho por UBS + Alertas recentes */}
+      {/* Desempenho por UBS + Alertas operacionais */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Desempenho por UBS */}
         <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
@@ -232,37 +238,86 @@ export default function DashboardAdministrativoPage() {
           </CardContent>
         </Card>
 
-        {/* Alertas recentes na rede */}
+        {/* Alertas Operacionais - resumo (RF-FE-04) */}
         <Card className="rounded-[20px] border-none" style={{ boxShadow: "var(--shadow-soft)" }}>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: ADMIN_BG }}>
-                <AlertCircle className="w-3.5 h-3.5" style={{ color: ADMIN_COLOR }} strokeWidth={1.25} />
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: ADMIN_BG }}>
+                    <AlertTriangle className="w-3.5 h-3.5" style={{ color: ADMIN_COLOR }} strokeWidth={1.25} />
+                  </div>
+                  Alertas Operacionais
+                  <span
+                    className="flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-bold text-white"
+                    style={{ background: ADMIN_COLOR }}
+                  >
+                    {contadores.total}
+                  </span>
+                </CardTitle>
+                <CardDescription className="text-[13px] mt-1">
+                  Inconsistencias e pendencias mais criticas
+                </CardDescription>
               </div>
-              Alertas Recentes na Rede
-            </CardTitle>
-            <CardDescription className="text-[13px]">Últimos alertas de todas as unidades</CardDescription>
+              <Button variant="ghost" size="sm" className="text-[13px] gap-1 flex-shrink-0" style={{ color: ADMIN_COLOR }} asChild>
+                <Link href="/portal-administrativo/alertas-operacionais">
+                  Ver todos <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-2">
-            {alertasRecentes.map((alerta, i) => (
-              <div key={i} className="flex items-start justify-between gap-3 p-2.5 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors">
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-semibold text-foreground truncate">{alerta.paciente}</p>
-                  <p className="text-[12px] text-muted-foreground">{alerta.tipo} · {alerta.ubs}</p>
+            {alertasDestaque.map((alerta) => {
+              const catCfg = categoriaConfig[alerta.categoria]
+              const CatIcon = catCfg.icon
+              const priCfg = prioridadeConfig[alerta.prioridade]
+              const staCfg = statusAlertaOpConfig[alerta.status]
+              return (
+                <div
+                  key={alerta.id}
+                  className="p-3.5 rounded-xl border border-border bg-card hover:bg-muted/30 transition-colors"
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5", catCfg.bg)}>
+                        <CatIcon className={cn("w-4 h-4", catCfg.text)} strokeWidth={1.5} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                          <span className="flex items-center gap-1.5">
+                            <span className={cn("w-2 h-2 rounded-full", priCfg.dot)} />
+                            <span className="text-[11px] font-semibold text-muted-foreground">{priCfg.label}</span>
+                          </span>
+                          <span className={cn("inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold", catCfg.bg, catCfg.text)}>
+                            {catCfg.label}
+                          </span>
+                          <span className={cn("inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold", staCfg.className)}>
+                            {staCfg.label}
+                          </span>
+                        </div>
+                        <p className="text-[13px] text-foreground leading-relaxed">{alerta.descricao}</p>
+                        <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                          <span className="text-[12px] font-semibold text-foreground">{alerta.paciente}</span>
+                          <span className="text-[11px] text-muted-foreground">{alerta.unidade}</span>
+                          <span className="text-[11px] text-muted-foreground tabular-nums">{alerta.dataDeteccao}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="rounded-xl text-[12px] gap-1.5 flex-shrink-0"
+                      asChild
+                    >
+                      <Link href="/portal-administrativo/alertas-operacionais">
+                        <ExternalLink className="w-3 h-3" />
+                        Corrigir registro
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-semibold ${statusBadge[alerta.status].className}`}>
-                    {statusBadge[alerta.status].label}
-                  </span>
-                  <span className="text-[11px] text-muted-foreground tabular-nums">{alerta.tempo}</span>
-                </div>
-              </div>
-            ))}
-            <Button variant="ghost" size="sm" className="w-full mt-1 text-[13px] rounded-xl" asChild>
-              <Link href="/portal-administrativo/monitoramento">
-                Ver monitoramento completo <ArrowRight className="ml-1 w-3.5 h-3.5" />
-              </Link>
-            </Button>
+              )
+            })}
           </CardContent>
         </Card>
       </div>

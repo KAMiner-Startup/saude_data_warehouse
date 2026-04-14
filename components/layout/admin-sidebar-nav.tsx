@@ -29,6 +29,7 @@ const menuPrincipal = [
 
 const menuMonitoramento = [
   { title: "Monitoramento", url: "/portal-administrativo/monitoramento", icon: Activity, badge: 7 },
+  { title: "Alertas Operacionais", url: "/portal-administrativo/alertas-operacionais", icon: Bell, badge: 5 },
 ]
 
 const menuGestao = [

@@ -15,6 +15,7 @@ import AdminRelatoriosPage from "@/app/portal-administrativo/relatorios/page"
 import AdminUnidadesApsPage from "@/app/portal-administrativo/unidades-aps/page"
 import AdminUnidadesHospitalaresPage from "@/app/portal-administrativo/unidades-hospitalares/page"
 import AdminUsuariosPage from "@/app/portal-administrativo/usuarios/page"
+import AdminAlertasOperacionaisPage from "@/app/portal-administrativo/alertas-operacionais/page"
 
 import PortalAtencaoBasicaLayout from "@/app/portal-atencao-basica/layout"
 import ApsDashboardPage from "@/app/portal-atencao-basica/dashboard/page"
@@ -83,6 +84,7 @@ export function AppRouter() {
 
       <Route path="/portal-administrativo" element={<AdminLayoutRoute />}>
         <Route path="dashboard" element={<AdminDashboardPage />} />
+        <Route path="alertas-operacionais" element={<AdminAlertasOperacionaisPage />} />
         <Route path="auditoria" element={<AdminAuditoriaPage />} />
         <Route path="configuracoes" element={<AdminConfiguracoesPage />} />
         <Route path="configuracoes/alertas" element={<AdminConfiguracoesAlertasPage />} />
