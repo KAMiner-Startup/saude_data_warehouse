@@ -23,12 +23,14 @@ import ApsAgentesPage from "@/app/portal-atencao-basica/agentes/page"
 import ApsAlertasPage from "@/app/portal-atencao-basica/alertas/page"
 import ApsIndicadoresPage from "@/app/portal-atencao-basica/indicadores/page"
 import ApsPacientesPage from "@/app/portal-atencao-basica/pacientes/page"
+import ApsPacientesAtendidosPage from "@/app/portal-atencao-basica/pacientes-atendidos/page"
 import ApsPacientePage from "@/app/portal-atencao-basica/paciente/[id]/page"
 import ApsVisitasPage from "@/app/portal-atencao-basica/visitas/page"
 
 import PortalRecepcaoLayout from "@/app/portal-recepcao/layout"
 import RecepcaoDashboardPage from "@/app/portal-recepcao/dashboard/page"
 import RecepcaoPacientesPage from "@/app/portal-recepcao/pacientes/page"
+import RecepcaoPacientesAtendidosPage from "@/app/portal-recepcao/pacientes-atendidos/page"
 import RecepcaoPacientePage from "@/app/portal-recepcao/paciente/[id]/page"
 import RecepcaoUnidadesPage from "@/app/portal-recepcao/unidades/page"
 import RecepcaoAgentesPage from "@/app/portal-recepcao/agentes/page"
@@ -102,6 +104,7 @@ export function AppRouter() {
         <Route path="alertas" element={<ApsAlertasPage />} />
         <Route path="indicadores" element={<ApsIndicadoresPage />} />
         <Route path="pacientes" element={<ApsPacientesPage />} />
+        <Route path="pacientes-atendidos" element={<ApsPacientesAtendidosPage />} />
         <Route path="paciente/:id" element={<ApsPacientePage />} />
         <Route path="visitas" element={<ApsVisitasPage />} />
         <Route index element={<Navigate to="dashboard" replace />} />
@@ -118,6 +121,7 @@ export function AppRouter() {
       <Route path="/portal-recepcao" element={<RecepcaoLayoutRoute />}>
         <Route path="dashboard" element={<RecepcaoDashboardPage />} />
         <Route path="pacientes" element={<RecepcaoPacientesPage />} />
+        <Route path="pacientes-atendidos" element={<RecepcaoPacientesAtendidosPage />} />
         <Route path="paciente/:id" element={<RecepcaoPacientePage />} />
         <Route path="unidades" element={<RecepcaoUnidadesPage />} />
         <Route path="agentes" element={<RecepcaoAgentesPage />} />

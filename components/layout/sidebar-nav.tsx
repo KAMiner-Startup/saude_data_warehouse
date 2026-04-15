@@ -42,7 +42,7 @@ const menuMovimentacoes = [
 
 const menuAcessoRapido = [
   {
-    title: "Pacientes Recentes",
+    title: "Pacientes atendidos",
     url: "/portal-hospitalar/pacientes-recentes",
     icon: Clock,
   },

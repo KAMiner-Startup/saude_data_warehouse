@@ -14,6 +14,7 @@ import {
   CalendarDays,
   UserCog,
   Building2,
+  Clock,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -61,6 +62,11 @@ const menuPacientes = [
     title: "Pacientes",
     url: "/portal-atencao-basica/pacientes",
     icon: Users,
+  },
+  {
+    title: "Atendidos recentemente",
+    url: "/portal-atencao-basica/pacientes-atendidos",
+    icon: Clock,
   },
 ]
 

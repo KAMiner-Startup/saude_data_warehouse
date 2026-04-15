@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { LayoutDashboard, Users, Building2, UserCheck, ChevronLeft, ChevronRight } from "lucide-react"
+import { LayoutDashboard, Users, Building2, UserCheck, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Tooltip,
@@ -21,6 +21,11 @@ const menuPrincipal = [
     title: "Dashboard",
     url: "/portal-recepcao/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Atendidos recentemente",
+    url: "/portal-recepcao/pacientes-atendidos",
+    icon: Clock,
   },
 ]
 
