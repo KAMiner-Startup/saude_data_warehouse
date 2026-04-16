@@ -15,6 +15,7 @@ import {
   UserCog,
   Building2,
   Clock,
+  ClipboardList,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -83,6 +84,14 @@ const menuVisitas = [
     title: "Visitas Domiciliares",
     url: "/portal-atencao-basica/visitas",
     icon: CalendarDays,
+  },
+]
+
+const menuEquipe = [
+  {
+    title: "Reuniao de equipe",
+    url: "/portal-atencao-basica/reuniao-equipe",
+    icon: ClipboardList,
   },
 ]
 
@@ -241,6 +250,18 @@ export function ApsSidebarNav({ collapsed, onToggle }: ApsSidebarNavProps) {
             <SectionLabel>Visitas</SectionLabel>
             <div className="space-y-0.5">
               {menuVisitas.map((item) => (
+                <NavItem key={item.title} item={item} />
+              ))}
+            </div>
+          </div>
+
+          <div className="mx-2 h-px bg-border" />
+
+          {/* Equipe */}
+          <div>
+            <SectionLabel>Equipe</SectionLabel>
+            <div className="space-y-0.5">
+              {menuEquipe.map((item) => (
                 <NavItem key={item.title} item={item} />
               ))}
             </div>

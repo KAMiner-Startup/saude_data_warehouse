@@ -26,6 +26,7 @@ import ApsPacientesPage from "@/app/portal-atencao-basica/pacientes/page"
 import ApsPacientesAtendidosPage from "@/app/portal-atencao-basica/pacientes-atendidos/page"
 import ApsPacientePage from "@/app/portal-atencao-basica/paciente/[id]/page"
 import ApsVisitasPage from "@/app/portal-atencao-basica/visitas/page"
+import ApsReuniaoEquipePage from "@/app/portal-atencao-basica/reuniao-equipe/page"
 
 import PortalRecepcaoLayout from "@/app/portal-recepcao/layout"
 import RecepcaoDashboardPage from "@/app/portal-recepcao/dashboard/page"
@@ -107,6 +108,7 @@ export function AppRouter() {
         <Route path="pacientes-atendidos" element={<ApsPacientesAtendidosPage />} />
         <Route path="paciente/:id" element={<ApsPacientePage />} />
         <Route path="visitas" element={<ApsVisitasPage />} />
+        <Route path="reuniao-equipe" element={<ApsReuniaoEquipePage />} />
         <Route index element={<Navigate to="dashboard" replace />} />
       </Route>
 

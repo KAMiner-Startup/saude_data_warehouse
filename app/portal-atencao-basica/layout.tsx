@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ApsSidebarNav } from "@/components/layout/aps-sidebar-nav"
 import { ApsHeader } from "@/components/layout/aps-header"
+import { ApsSidebarContext } from "@/lib/aps-sidebar-context"
 
 export default function PortalAtencaoBasicaLayout({
   children,
@@ -12,6 +13,7 @@ export default function PortalAtencaoBasicaLayout({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   return (
+    <ApsSidebarContext.Provider value={{ collapsed: sidebarCollapsed, setCollapsed: setSidebarCollapsed }}>
     <div className="flex h-screen w-full overflow-hidden bg-slate-50">
       <ApsSidebarNav
         collapsed={sidebarCollapsed}
@@ -37,5 +39,6 @@ export default function PortalAtencaoBasicaLayout({
         </main>
       </div>
     </div>
+    </ApsSidebarContext.Provider>
   )
 }
