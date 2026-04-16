@@ -72,7 +72,7 @@ const menuPacientes = [
 
 const menuIndicadores = [
   {
-    title: "Indicadores",
+    title: "Alertas",
     url: "/portal-atencao-basica/indicadores",
     icon: BarChart2,
   },

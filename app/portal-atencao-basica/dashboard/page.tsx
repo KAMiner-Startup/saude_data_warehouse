@@ -95,7 +95,7 @@ const motivoConfig: Record<MotivoTipo, { label: string; bg: string; textColor: s
 }
 
 const acessoRapido = [
-  { label: "Indicadores de saúde", href: "/portal-atencao-basica/indicadores", icon: BarChart2 },
+  { label: "Alertas de saúde", href: "/portal-atencao-basica/indicadores", icon: BarChart2 },
   { label: "Planejar visitas", href: "/portal-atencao-basica/visitas", icon: CalendarDays },
   { label: "Agentes de saúde", href: "/portal-atencao-basica/agentes", icon: UserCheck },
   { label: "Carteira de pacientes", href: "/portal-atencao-basica/pacientes", icon: Users },
@@ -169,7 +169,7 @@ export default function DashboardApsPage() {
             <CardContent className="p-5">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Fora do indicador</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Com alertas</p>
                   <p className="text-3xl font-bold mt-2 text-foreground">4</p>
                   <p className="text-[12px] text-muted-foreground mt-1">Pacientes afetados</p>
                 </div>
